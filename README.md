@@ -2,7 +2,9 @@
 Flask-Based Stock Data Viewer
 
 ## How to Run
-Set up the anaconda environment from pystocks.yml, then run `python PyStocks.py`
+First you'll need an API key from [AlphaVantage](https://www.alphavantage.co/). As of this commit, it's free, and they don't send spam.
+
+Then set up the anaconda environment from pystocks.yml, then run `python PyStocks.py`
 
 ## API
 ### Home Page
