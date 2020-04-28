@@ -7,7 +7,7 @@ from alpha_vantage.timeseries import TimeSeries
 import mpld3
 
 app = Flask(__name__)
-ts = TimeSeries(key=Creds().getApiKey(),output_format='pandas')
+ts = TimeSeries(key=Creds().getApiKey(), output_format='pandas')
 
 @app.route('/')
 def home():
@@ -16,7 +16,7 @@ def home():
 @app.route('/current_price')
 def getCurrentPrice():
     symbol = request.args.get('symbol')
-    if symbol == None:
+    if symbol is None:
         return Response("No symbol given!", status=400)
     try:
         price = ts.get_intraday(symbol=symbol)[0].iloc[-1]['4. close']
@@ -27,7 +27,7 @@ def getCurrentPrice():
 @app.route('/daily_chart')
 def getCurrentChart():
     symbol = request.args.get('symbol')
-    if symbol == None:
+    if symbol is None:
         return Response("No symbol given!", status=400)
     try:
         fig = plt.figure()

@@ -40,6 +40,7 @@ dependencies:
     - multidict==4.7.5
     - numpy==1.18.3
     - pandas==1.0.3
+    - pycodestyle==2.5.0
     - pyparsing==2.4.7
     - python-dateutil==2.8.1
     - pytz==2019.3
@@ -48,5 +49,3 @@ dependencies:
     - urllib3==1.25.9
     - werkzeug==1.0.1
     - yarl==1.4.2
-prefix: /home/andrew/anaconda3/envs/pystocks
-
