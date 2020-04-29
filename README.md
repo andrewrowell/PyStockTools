@@ -1,10 +1,10 @@
-# PyStocks
+# PyStockTools
 Flask-Based Stock Data Viewer
 
 ## How to Run
 First you'll need an API key from [AlphaVantage](https://www.alphavantage.co/). As of this commit, it's free, and they don't send spam. Once you get an API key from them, put it in your local copy of Creds.py.
 
-Then set up the anaconda environment from pystocks.yml, then run `python PyStocks.py`
+Then set up the anaconda environment from pystocktools.yml, then run `python PyStockTools.py`
 
 ## API
 ### Home Page
