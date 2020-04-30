@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import Response
 from Creds import Creds
+import datetime
 import matplotlib.pyplot as plt
 from alpha_vantage.timeseries import TimeSeries
 import mpld3
@@ -27,11 +28,28 @@ def getCurrentPrice():
 @app.route('/daily_chart')
 def getCurrentChart():
     symbol = request.args.get('symbol')
+    startDate = request.args.get('startDate')
+    if startDate is not None:
+        startDate = datetime.datetime.strptime(startDate, "%Y-%m-%d")
+    endDate = request.args.get('endDate')
+    if endDate is not None:
+        endDate = datetime.datetime.strptime(endDate, "%Y-%m-%d")
+
     if symbol is None:
         return Response("No symbol given!", status=400)
     try:
         fig = plt.figure()
-        plt.plot(ts.get_daily_adjusted(symbol=symbol)[0]['5. adjusted close'])
+        data, metadata = ts.get_daily_adjusted(symbol=symbol)
+
+        # If start date is not within the recent data, fetch the full dataset.
+        if data.index[0] > startDate:
+            data, metadata = ts.get_daily_adjusted(symbol=symbol, outputsize="full")
+
+        if startDate is not None:
+            data = data[data.index >= startDate]
+        if endDate is not None:
+            data = data[data.index <= endDate]
+        plt.plot(data['5. adjusted close'])
         chart_html = mpld3.fig_to_html(fig)
         return chart_html
     except:
