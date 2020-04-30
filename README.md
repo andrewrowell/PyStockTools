@@ -28,3 +28,10 @@ Optional Parameters:
 ## Making Changes
 ### Creds.py
 Since this file may contain login info, I've configured git to [not add](https://stackoverflow.com/a/39776107) its changes.
+
+## To Do
+* Make it possible to get `daily_data` response in CSV format.
+* Add some type of caching. This would reduce calls to Alpha Vantage, and reduce API latency.
+* Start adding technical indicators.
+* Rate limit upstream API calls. 
+* Basic GUI on home page.
