@@ -1,14 +1,14 @@
 from flask import Flask
 from flask import request
 from flask import Response
-from Creds import Creds
 import datetime
 import matplotlib.pyplot as plt
-from alpha_vantage.timeseries import TimeSeries
 import mpld3
+import Data as Data
 
 app = Flask(__name__)
-ts = TimeSeries(key=Creds().getApiKey(), output_format='pandas')
+
+DATE_FORMAT = "%Y-%m-%d"
 
 @app.route('/')
 def home():
@@ -20,7 +20,7 @@ def getCurrentPrice():
     if symbol is None:
         return Response("No symbol given!", status=400)
     try:
-        price = ts.get_intraday(symbol=symbol)[0].iloc[-1]['4. close']
+        price = Data.getCurrentPrice(symbol)
         return str(price)
     except:
         return Response("An error occurred", status=500)
@@ -30,20 +30,16 @@ def getCurrentChart():
     symbol = request.args.get('symbol')
     startDate = request.args.get('startDate')
     if startDate is not None:
-        startDate = datetime.datetime.strptime(startDate, "%Y-%m-%d")
+        startDate = datetime.datetime.strptime(startDate, DATE_FORMAT)
     endDate = request.args.get('endDate')
     if endDate is not None:
-        endDate = datetime.datetime.strptime(endDate, "%Y-%m-%d")
+        endDate = datetime.datetime.strptime(endDate, DATE_FORMAT)
 
     if symbol is None:
         return Response("No symbol given!", status=400)
     try:
         fig = plt.figure()
-        data, metadata = ts.get_daily_adjusted(symbol=symbol)
-
-        # If start date is not within the recent data, fetch the full dataset.
-        if data.index[0] > startDate:
-            data, metadata = ts.get_daily_adjusted(symbol=symbol, outputsize="full")
+        data = Data.getDailyData(symbol, startDate=startDate, endDate=endDate)
 
         if startDate is not None:
             data = data[data.index >= startDate]
