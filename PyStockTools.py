@@ -1,10 +1,12 @@
 from flask import Flask
 from flask import request
 from flask import Response
+from flask import jsonify
 import datetime
 import matplotlib.pyplot as plt
 import mpld3
 import Data as Data
+import json
 
 app = Flask(__name__)
 
@@ -48,6 +50,31 @@ def getCurrentChart():
         plt.plot(data['5. adjusted close'])
         chart_html = mpld3.fig_to_html(fig)
         return chart_html
+    except:
+        return Response("An error occurred", status=500)
+
+@app.route("/daily_data")
+def getDailyData():
+    symbol = request.args.get('symbol')
+    startDate = request.args.get('startDate')
+    if startDate is not None:
+        startDate = datetime.datetime.strptime(startDate, DATE_FORMAT)
+    endDate = request.args.get('endDate')
+    if endDate is not None:
+        endDate = datetime.datetime.strptime(endDate, DATE_FORMAT)
+
+    if symbol is None:
+        return Response("No symbol given!", status=400)
+    try:
+        data = Data.getDailyData(symbol, startDate=startDate, endDate=endDate)
+
+        if startDate is not None:
+            data = data[data.index >= startDate]
+        if endDate is not None:
+            data = data[data.index <= endDate]
+
+        output = data.to_json(date_format='iso')
+        return Response(response=output, mimetype='application/json')
     except:
         return Response("An error occurred", status=500)
 
