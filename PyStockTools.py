@@ -12,9 +12,11 @@ app = Flask(__name__)
 
 DATE_FORMAT = "%Y-%m-%d"
 
+
 @app.route('/')
 def home():
     return "Home Page"
+
 
 @app.route('/current_price')
 def getCurrentPrice():
@@ -24,8 +26,9 @@ def getCurrentPrice():
     try:
         price = Data.getCurrentPrice(symbol)
         return str(price)
-    except:
+    except ValueError:
         return Response("An error occurred", status=500)
+
 
 @app.route('/daily_chart')
 def getCurrentChart():
@@ -50,8 +53,9 @@ def getCurrentChart():
         plt.plot(data['5. adjusted close'])
         chart_html = mpld3.fig_to_html(fig)
         return chart_html
-    except:
+    except ValueError:
         return Response("An error occurred", status=500)
+
 
 @app.route("/daily_data")
 def getDailyData():
@@ -84,8 +88,9 @@ def getDailyData():
             return Response(response=output, mimetype='text/csv')
         else:
             return Response("Invalid output type given.", status=500)
-    except:
+    except ValueError:
         return Response("An error occurred", status=500)
+
 
 if __name__ == '__main__':
     app.run()

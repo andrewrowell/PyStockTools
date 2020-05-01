@@ -31,6 +31,8 @@ Optional Parameters:
 Since this file may contain login info, I've configured git to [not add](https://stackoverflow.com/a/39776107) its changes.
 
 ## To Do
+* Automated Testing
+* pycodestyle git commit hook
 * Add some type of caching. This would reduce calls to Alpha Vantage, and reduce API latency.
 * Start adding technical indicators.
 * Rate limit upstream API calls. 
