@@ -62,6 +62,9 @@ def getDailyData():
     endDate = request.args.get('endDate')
     if endDate is not None:
         endDate = datetime.datetime.strptime(endDate, DATE_FORMAT)
+    outputType = request.args.get('outputType')
+    if outputType is None:
+        outputType = 'json'
 
     if symbol is None:
         return Response("No symbol given!", status=400)
@@ -73,8 +76,14 @@ def getDailyData():
         if endDate is not None:
             data = data[data.index <= endDate]
 
-        output = data.to_json(date_format='iso')
-        return Response(response=output, mimetype='application/json')
+        if outputType == 'json':
+            output = data.to_json(date_format='iso')
+            return Response(response=output, mimetype='application/json')
+        elif outputType == 'csv':
+            output = data.to_csv()
+            return Response(response=output, mimetype='text/csv')
+        else:
+            return Response("Invalid output type given.", status=500)
     except:
         return Response("An error occurred", status=500)
 

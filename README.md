@@ -22,15 +22,15 @@ Optional Parameters:
 `https://localhost:5000/daily_data?symbol=[SYMBOL]` returns json data for the specified stock.
 
 Optional Parameters:
-* startDate - first date to chart, in YYYY-MM-DD format
-* endDate - last date to chart, in YYYY-MM-DD format
+* startDate - first date to chart, in YYYY-MM-DD format.
+* endDate - last date to chart, in YYYY-MM-DD format.
+* outputType - can be `json` or `csv`, will default to `json` if not passed.
 
 ## Making Changes
 ### Creds.py
 Since this file may contain login info, I've configured git to [not add](https://stackoverflow.com/a/39776107) its changes.
 
 ## To Do
-* Make it possible to get `daily_data` response in CSV format.
 * Add some type of caching. This would reduce calls to Alpha Vantage, and reduce API latency.
 * Start adding technical indicators.
 * Rate limit upstream API calls. 
